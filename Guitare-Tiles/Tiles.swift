@@ -15,37 +15,56 @@ class Tiles: UIView {
         case blue
         case yellow
         case green
-
+        
         var image: UIImage {
             switch self {
             case .red:
-                return UIImage(named: "redTile")!
+                return UIImage(named: "RedTiles")!
             case .blue:
-                return UIImage(named: "blueTile")!
+                return UIImage(named: "BlueTiles")!
             case .yellow:
-                return UIImage(named: "yellowTile")!
+                return UIImage(named: "YellowTiles")!
             case .green:
-                return UIImage(named: "greenTile")!
+                return UIImage(named: "GreenTiles")!
+            }
+        }
+        var xPosition: CGFloat
+        {
+            switch self
+            {
+                case .red:
+                    return 16
+                case .blue:
+                    return 116
+                case .yellow:
+                    return 210
+                case .green:
+                    return 307
             }
         }
     }
-
+    
     private var colorSelected: Color
-    private var imgView: UIImageView
-
-    public var speed: Double = 0.8
+    
+    public var imgView: UIImageView
+    public var speed: Double = 1.2
     public var isHit = false
-    public var hasReachedBottom = false
+    public var Interactable = true
+    public var colorIndex : Int!
     
     init(colorIndex: Int, frame: CGRect)
     {
-       self.colorSelected = Color(rawValue: colorIndex) ?? .red
-       self.imgView = UIImageView(image: self.colorSelected.image)
-       super.init(frame: frame)
+        self.colorIndex = colorIndex
+        self.colorSelected = Color(rawValue: colorIndex) ?? .red
+        self.imgView = UIImageView(image: self.colorSelected.image)
+        super.init(frame: frame)
 
-       self.addSubview(imgView)
-       imgView.frame = self.bounds
-       imgView.contentMode = .scaleAspectFit
+        self.addSubview(imgView)
+        imgView.frame = self.bounds
+        imgView.contentMode = .scaleAspectFit
+        
+        self.frame.origin.x = colorSelected.xPosition //corrige la position sur l'axe X de la brique en fonction de la couleur
+
     }
 
     required init?(coder: NSCoder)
@@ -54,9 +73,9 @@ class Tiles: UIView {
     }
     
     
-    func Falling()
+    func FallingUpdate()
     {
-            
+        self.frame.origin.y += speed
     }
 
 }
