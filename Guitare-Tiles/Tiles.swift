@@ -47,10 +47,12 @@ class Tiles: UIView {
     private var colorSelected: Color
     
     public var imgView: UIImageView
+    
     public var speed: Double = 1.2
     public var isHit = false
-    public var Interactable = true
+    public var Interactable = false
     public var colorIndex : Int!
+    public var value: Int = 1
     
     init(colorIndex: Int, frame: CGRect)
     {
@@ -77,5 +79,7 @@ class Tiles: UIView {
     {
         self.frame.origin.y += speed
     }
+    
+   
 
 }
