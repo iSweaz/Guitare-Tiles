@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
     
@@ -16,19 +17,18 @@ class ViewController: UIViewController {
     var displayLink: CADisplayLink?
     var lanes: [[Tiles]] = [[], [], [], []]
     var fallingTiles : [Tiles] = []
+    var player: AVPlayer!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        startAudio()
         for i in 0...3
         {
-            let tile = Tiles(colorIndex: i, frame: CGRect(x: 0, y: 0, width: 70, height: 70))
-            fallingTiles.append(tile)
-            view.addSubview(tile)
+            SpawnTile(index: i)
         }
         
-        SpwanTile(index: 0)
         displayLink = CADisplayLink(target: self, selector: #selector(gameLoop))
         displayLink?.add(to: .main, forMode: .default)
         scoreText.text = score.codingKey.stringValue
@@ -82,7 +82,7 @@ class ViewController: UIViewController {
     ///Fait spwan une brique dans le jeu.
     ///index : utilisé pour choisir une couleur en fonction de l'enum Color
     ///IMPORTANT : a utiliser que si on veux rajouter des briques, en principe utilisable que à l'init du jeu
-    func SpwanTile(index: Int)
+    func SpawnTile(index: Int)
     {
         let tile = Tiles(colorIndex: index, frame: CGRect(x: 0, y: 0, width: 70, height: 70))
         fallingTiles.append(tile) //à retiré quand les test seront fini
@@ -99,6 +99,28 @@ class ViewController: UIViewController {
                 UpdateScore(value: tile.value)
             }
         }
+    }
+    
+
+    func startAudio() {
+        let url = Bundle.main.url(forResource: "ACDC", withExtension: "mp3")!
+        player = AVPlayer(url: url)
+        
+        /*let times = [2.0, 5.5, 10.0].map {
+            CMTime(seconds: $0, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        }
+        
+        for time in times {
+            player.addBoundaryTimeObserver(forTimes: [NSValue(time: time)], queue: .main) {
+                self.triggerAction(at: CMTimeGetSeconds(time))
+            }
+        }*/
+        
+        player.play()
+    }
+
+    func triggerAction(at time: TimeInterval) {
+        print("Trigger précis à \(time)s")
     }
 
 }
